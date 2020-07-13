@@ -14,7 +14,7 @@ const totalLikes = (blogs) => {
 const favoriteBlog = (blogs) => {
     if (blogs.length === 0)
         return {}
-    else if (blogs.length === 1){
+    else if (blogs.length === 1) {
         return {
             title: blogs[0].title,
             author: blogs[0].author,
@@ -22,7 +22,7 @@ const favoriteBlog = (blogs) => {
         }
     }
     else {
-        const blog = blogs.reduce((acc, curr) => (!acc.likes || acc.likes < curr.likes) ? curr : acc , {})
+        const blog = blogs.reduce((acc, curr) => (!acc.likes || acc.likes < curr.likes) ? curr : acc, {})
         return {
             title: blog.title,
             author: blog.author,
@@ -30,8 +30,32 @@ const favoriteBlog = (blogs) => {
         }
     }
 }
+
+const mostBlogs = (blogs) => {
+    if (blogs.length === 0)
+        return {}
+    else if (blogs.length === 1) {
+        return {
+            author: blogs[0].author,
+            blogs: 1
+        }
+    }else{
+        let authors = blogs.map(blog => blog.author)
+        let oneAuthor = new Set(authors)
+        let authorsWithBlogs = Array.from(oneAuthor).map(item => {
+            let numBlogs = 0
+            authors.forEach(author => {
+                if(author === item)
+                numBlogs++
+            })
+            return {author:item, blogs: numBlogs}
+        })
+        return authorsWithBlogs.reduce((acc, curr) => (!acc.blogs || acc.blogs < curr.blogs) ? curr : acc, {})
+    }
+}
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
 }
