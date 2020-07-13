@@ -46,8 +46,8 @@ describe('total likes', () => {
     })
 })
 
-describe('most likes', () => {
-    test('most likes', () => {
+describe('favorite blog', () => {
+    test('favorite blog', () => {
         const result = listHelper.favoriteBlog(blogs)
         expect(result).toEqual(
             {
@@ -66,6 +66,18 @@ describe('most blogs', () => {
                 author: "Robert C. Martin",
                 blogs: 3
             })
+
+    })
+
+})
+describe('most likes', () => {
+    test('most likes', () => {
+        const result = listHelper.mostLikes(blogs)
+        expect(result).toEqual(
+            {
+                author: "Edsger W. Dijkstra",
+                likes: 17
+              })
 
     })
 

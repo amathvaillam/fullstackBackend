@@ -53,9 +53,33 @@ const mostBlogs = (blogs) => {
         return authorsWithBlogs.reduce((acc, curr) => (!acc.blogs || acc.blogs < curr.blogs) ? curr : acc, {})
     }
 }
+const mostLikes = (blogs) => {
+    if (blogs.length === 0)
+        return {}
+    else if (blogs.length === 1) {
+        return {
+            author: blogs[0].author,
+            blogs: blogs[0].likes
+        }
+    }else{
+        let authors = blogs.map(blog => blog.author)
+        let oneAuthor = new Set(authors)
+        let authorsWithLikes = Array.from(oneAuthor).map(item => {
+            let numLikes = 0
+            blogs.forEach(blog => {
+                if(blog.author === item)
+                numLikes += blog.likes
+            })
+            return {author:item, likes: numLikes}
+        })
+        return authorsWithLikes.reduce((acc, curr) => (!acc.likes || acc.likes < curr.likes) ? curr : acc, {})
+    }
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
