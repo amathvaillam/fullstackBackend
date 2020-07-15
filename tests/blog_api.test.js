@@ -63,6 +63,18 @@ test('missing likes', async () => {
     expect(lastBlog.likes).toBe(0)
 })
 
+test('missing title and url', async () => {
+    const newBlog = {
+        author: "amzo rock",
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+})
 
 
 afterAll(() => {
