@@ -1,6 +1,8 @@
 const config = require('./utils/config')
 const express = require('express')
 const app = express()
+
+require('express-async-errors')
 const cors = require('cors')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -21,8 +23,8 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
-app.use(middleware.requestLogger)
-app.use(morgan(function (tokens, req, res) {
+//app.use(middleware.requestLogger)
+/*app.use(morgan(function (tokens, req, res) {
     return [
         tokens.method(req, res),
         tokens.url(req, res),
@@ -33,7 +35,7 @@ app.use(morgan(function (tokens, req, res) {
             .map(item => `"${item[0]}":"${item[1]}"`)
             .join(',')
         }}`].join(' ')
-}))
+}))*/
 
 app.use('/api/blogs', blogRouter)
 app.use(middleware.unknownEndpoint)
