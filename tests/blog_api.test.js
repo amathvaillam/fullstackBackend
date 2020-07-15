@@ -44,6 +44,26 @@ test('a valid blog can be added ', async () => {
     expect(titles).toContain(newBlog.title)
 })
 
+test('missing likes', async () => {
+    const newBlog = {
+        title: "Rock n roll",
+        author: "amzo rock",
+        url: "askia.net",
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    const lastBlog = blogsAtEnd[blogsAtEnd.length - 1]
+    console.log(lastBlog)
+    expect(lastBlog.likes).toBe(0)
+})
+
+
 
 afterAll(() => {
     mongoose.connection.close()
