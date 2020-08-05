@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const Blog = require('../models/blog')
 const app = require('../app')
-const helper = require('../utils/list_helper')
+const helper = require('./list_helper')
 
 const api = supertest(app)
 
@@ -59,7 +59,6 @@ test('missing likes', async () => {
 
     const blogsAtEnd = await helper.blogsInDB()
     const lastBlog = blogsAtEnd[blogsAtEnd.length - 1]
-    console.log(lastBlog)
     expect(lastBlog.likes).toBe(0)
 })
 
