@@ -75,6 +75,19 @@ test('missing title and url', async () => {
 
 })
 
+test('valid user', async () => {
+    const newBlog = {
+        author: "amzo rock",
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+})
+
 
 afterAll(() => {
     mongoose.connection.close()

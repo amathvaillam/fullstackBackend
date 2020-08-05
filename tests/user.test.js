@@ -38,6 +38,25 @@ describe('when there is initially one user in db', () => {
         const usernames = usersAtEnd.map(u => u.username)
         expect(usernames).toContain(newUser.username)
     })
+
+    test('invalid user', async () => {
+        const usersAtStart = await helper.usersInDB()
+
+        const newUser = {
+            username: 'babacar',
+            name: 'niang',
+            password: 'sa',
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        const usersAtEnd = await helper.usersInDB()
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+          })
     afterAll(done => {
         mongoose.connection.close()
     })
