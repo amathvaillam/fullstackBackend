@@ -3,6 +3,14 @@ const bcrypt = require('bcryptjs')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+      return authorization.substring(7)
+    }
+    return null
+}
+
 usersRouter.post('/', async (request, response) => {
     const body = request.body
     const passwordCheck = pass => pass.length < 3
