@@ -2,6 +2,7 @@ const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
 
 
 blogRouter.get('/', async (request, response) => {
@@ -15,14 +16,13 @@ blogRouter.post('/', async (request, response) => {
     if (!url || !title) {
         return response.status(400).json({ error: "Bad Request" })
     }
-    
     const token = request.token
     const decodedToken = jwt.verify(token, process.env.SECRET)
     if (!token || !decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
-  
-      const user = await User.findById(decodedToken.id)
+    const id = new mongoose.Types.ObjectId(decodedToken.id)
+      const user = await User.findById(id)
     const blog = new Blog({
         likes: 0,
         url,
@@ -31,7 +31,6 @@ blogRouter.post('/', async (request, response) => {
         user: user.id
     })
     const savedBlog = await blog.save()
-
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
     return response.json(savedBlog)
